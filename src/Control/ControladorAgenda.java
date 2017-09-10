@@ -29,8 +29,8 @@ public class ControladorAgenda {
         Connection c = null;
         Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db");
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement();
@@ -47,7 +47,7 @@ public class ControladorAgenda {
             }
   
             
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
             stmt = c.createStatement();
             int count=0;
@@ -57,7 +57,7 @@ public class ControladorAgenda {
             stmt.close();
             c.close();
             
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
             stmt = c.createStatement();
             String sql2;
@@ -79,7 +79,7 @@ public class ControladorAgenda {
         Connection c = null;
         Statement stmt = null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
@@ -102,8 +102,8 @@ public class ControladorAgenda {
         String dt = data.dia+"/"+data.mes+"/"+data.ano;
         try {
             ArrayList<Consulta> retorno = new ArrayList<>();
-            Class.forName("org.sqlite.JDBC") ;
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
@@ -137,8 +137,8 @@ public class ControladorAgenda {
         Statement stmt = null;
         try {
             ArrayList<Consulta> retorno = new ArrayList<>();
-            Class.forName("org.sqlite.JDBC") ;
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
@@ -178,8 +178,8 @@ public class ControladorAgenda {
         Connection c = null;
         Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC") ;
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;

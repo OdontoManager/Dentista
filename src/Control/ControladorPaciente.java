@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -41,8 +41,9 @@ public class ControladorPaciente {
         Connection c = null;
         Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db");
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager",
+            "postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement();
@@ -78,8 +79,9 @@ public class ControladorPaciente {
         Connection c = null;
         Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db");
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager",
+            "postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement();
@@ -103,8 +105,9 @@ public class ControladorPaciente {
         Statement stmt = null;
         try {
             ArrayList<Paciente> retorno = new ArrayList<>();
-            Class.forName("org.sqlite.JDBC") ;
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager",
+            "postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
@@ -130,8 +133,9 @@ public class ControladorPaciente {
         Connection c = null;
          Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC") ;
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager",
+            "postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
@@ -157,7 +161,8 @@ public class ControladorPaciente {
          Connection c = null;
          Statement stmt = null;
         try{
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager",
+            "postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
@@ -180,8 +185,9 @@ public class ControladorPaciente {
         Connection c = null;
         Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC") ;
-            c = DriverManager.getConnection("jdbc:sqlite:Data.db") ;
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager",
+            "postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
