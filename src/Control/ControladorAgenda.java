@@ -34,24 +34,33 @@ public class ControladorAgenda {
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement();
-            try{
-                String sql = String.format(" ALTER TABLE Agenda ADD '%s' INT ", consulta.getHora());
-                stmt.executeUpdate(sql) ;
-                stmt.close();
-                c.commit();
-                c.close(); 
-                horarios = horariosDisponiveis();
-            }
-            catch(Exception e){
-                
-            }
-  
             
+            String sql = String.format("SELECT COUNT(COLUMN_NAME) AS resultado FROM INFORMATION_SCHEMA.COLUMNS "+
+            "WHERE TABLE_NAME = 'agenda' AND  COLUMN_NAME = '%s'",consulta.getHora());
+            
+            ResultSet checkHour = stmt.executeQuery(sql);
+            while ( checkHour.next()) {
+                if (checkHour.getInt("resultado")==0){
+                    sql = String.format(" ALTER TABLE agenda ADD COLUMN \"%s\" INT ", consulta.getHora());
+                    stmt.executeUpdate(sql) ;
+                    break;
+                }
+            }
+
+            stmt.close();
+            c.commit();
+            c.close(); 
+            
+            
+            horarios = horariosDisponiveis();
+ 
+            
+            Class.forName("org.postgresql.Driver");
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
             stmt = c.createStatement();
             int count=0;
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM Agenda WHERE Data='%s';",consulta.getData().toString())) ;
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM agenda WHERE Data='%s';",consulta.getData().toString())) ;
             while(rs.next())
                 count++;
             stmt.close();
@@ -62,9 +71,9 @@ public class ControladorAgenda {
             stmt = c.createStatement();
             String sql2;
             if (count>0)
-                sql2 = String.format("UPDATE Agenda SET '%s' = '%s' WHERE Data = '%s' ;", consulta.getHora(),consulta.getIdPaciente(), consulta.getData().toString());
+                sql2 = String.format("UPDATE agenda SET \"%s\" = '%s' WHERE \"data\" = '%s' ;", consulta.getHora(),consulta.getIdPaciente(), consulta.getData().toString());
             else
-                sql2 = String.format("INSERT INTO Agenda ('Data', '%s') VALUES ('%s', '%s') ;", consulta.getHora(), consulta.getData().toString(), consulta.getIdPaciente());
+                sql2 = String.format("INSERT INTO agenda (\"data\", \"%s\") VALUES ('%s', '%s') ;", consulta.getHora(), consulta.getData().toString(), consulta.getIdPaciente());
             stmt.executeUpdate(sql2) ;
             stmt.close();
             c.commit();
@@ -83,7 +92,7 @@ public class ControladorAgenda {
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
-            ResultSet rs = stmt.executeQuery("SELECT max(ID) from Agenda;");
+            ResultSet rs = stmt.executeQuery("SELECT max(ID) from agenda;");
             int value = Integer.valueOf(rs.getString(1));
             stmt.close();
             c.close(); 
@@ -107,7 +116,7 @@ public class ControladorAgenda {
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM Agenda WHERE Data='%s';",dt)) ;
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM agenda WHERE Data='%s';",dt)) ;
             while ( rs.next() ) {
                 for (String hora: horarios){
                     if (rs.getString(hora)!=null){
@@ -132,48 +141,36 @@ public class ControladorAgenda {
         }
         return null;
     }
+   
     public ArrayList<String> horariosDisponiveis(){
         Connection c = null;
         Statement stmt = null;
+        System.out.println("j");
         try {
-            ArrayList<Consulta> retorno = new ArrayList<>();
+            ArrayList<String> lista= new ArrayList<>();
             Class.forName("org.postgresql.Driver");
             c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/OdontoManager","postgres", "123");
             c.setAutoCommit(false) ;
 
             stmt = c.createStatement() ;
            
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM Agenda")) ;
-            ArrayList<String> lista= new ArrayList<>();
-            int h=0, m=0;
-            while(h<24){
-                try{
-                    String _h = String.valueOf(h);
-                    String _m = String.valueOf(m);
-                    if (h<10)
-                        _h = "0"+_h;
-                    if (m<10)
-                        _m = "0"+_m;
-                    rs.findColumn(_h+":"+_m);
-                    lista.add(_h+":"+_m);
-                }
-                catch(Exception e){
-                    
-                }
-                m++;
-                if (m==60){
-                    h++;
-                    m=0;
+            ResultSet rs = stmt.executeQuery("SELECT COLUMN_NAME AS resultado FROM "+
+            "INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'agenda'") ;
+            System.out.println("j");
+            while(rs.next()){
+                if (!rs.getString("resultado").equals("id") && !rs.getString("resultado").equals("data")){
+                    lista.add(rs.getString("resultado"));
                 }
             }
             stmt.close();
             c.close();
             return lista;
-        } catch ( Exception e ) {
-            System.err.println( e.getClass() .getName() + ": " + e.getMessage() );
+        }catch(Exception e){
+                
         }
         return null;
     }
+    
     public void deletar(int id){//CHANGE MEMU LEKOTE
         Connection c = null;
         Statement stmt = null;
